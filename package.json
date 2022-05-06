@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@grapecity/wijmo.purejs.all": "^5.20221.842"
+  }
+}

@@ -1,0 +1,43 @@
+﻿@using DevExpress.Blazor
+@using Microsoft.JSInterop
+@using GrapeCityJSDemo.Module.BusinessObjects
+@inject IJSRuntime jsruntime
+@inject DevExpress.ExpressApp.Blazor.Services.IXafApplicationProvider ApplicationProvider
+
+
+
+<div class="col-xs-6">
+    <div id="theComboBox"></div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public CustomInputModel ComponentModel { get; set; }
+    string LabelValue { get; set; } = null;
+    public List<Client> clients { get; set; }
+    private static DevExpress.ExpressApp.IObjectSpace objectSpace;
+    private static DevExpress.ExpressApp.Blazor.BlazorApplication blazorApplication;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        blazorApplication = ApplicationProvider.GetApplication();
+        objectSpace = blazorApplication.CreateObjectSpace();
+        clients = objectSpace.GetObjects<Client>(null).ToList();
+
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        List<string> clientsNames = new List<string>();
+        foreach (var item in clients)
+        {
+            clientsNames.Add(item.Name);
+        }
+        var listado = clientsNames;
+        await jsruntime.InvokeVoidAsync("initComboBox", clientsNames);
+    }
+
+    public static RenderFragment Create(CustomInputModel componentModel) =>@<CustomInputComponent ComponentModel="@componentModel" />;
+
+}

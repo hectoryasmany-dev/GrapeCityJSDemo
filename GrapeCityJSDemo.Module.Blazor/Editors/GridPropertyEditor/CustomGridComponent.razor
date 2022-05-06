@@ -1,0 +1,48 @@
+﻿@using DevExpress.Blazor
+@using Microsoft.JSInterop
+@using GrapeCityJSDemo.Module.BusinessObjects
+@using GrapeCityJSDemo.Module.BusinessObjects.DTOs
+@inject IJSRuntime jsruntime
+@inject DevExpress.ExpressApp.Blazor.Services.IXafApplicationProvider ApplicationProvider
+
+
+<div id="theGrid"></div>
+
+
+
+
+@code {
+    [Parameter]
+    public CustomGridModel ComponentModel { get; set; }
+    private static DevExpress.ExpressApp.IObjectSpace objectSpace;
+    private static DevExpress.ExpressApp.Blazor.BlazorApplication blazorApplication;
+    public List<Invoice> invoices { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        blazorApplication = ApplicationProvider.GetApplication();
+        objectSpace = blazorApplication.CreateObjectSpace();
+        invoices = ComponentModel.Value.ToList();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            List<InvoiceDto> invoicesList = new List<InvoiceDto>();
+            InvoiceDto invoiceDto;
+            foreach (var item in invoices)
+            {
+                invoiceDto = new InvoiceDto();
+                invoiceDto.Code = item.Code;
+                invoiceDto.ProductName = item.ProductName;
+                invoiceDto.Price = item.Price;
+                invoicesList.Add(invoiceDto);
+            }
+            await jsruntime.InvokeVoidAsync("initGrid", invoicesList);
+
+        }
+    }
+
+    public static RenderFragment Create(CustomGridModel customGridModel) =>@<CustomGridComponent ComponentModel="@customGridModel" />;
+}

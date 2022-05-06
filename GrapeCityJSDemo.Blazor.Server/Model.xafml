@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application>
+  <SchemaModules>
+    <SchemaModule Name="SystemModule" Version="21.2.6.0" IsNewNode="True" />
+  </SchemaModules>
+  <Views>
+    <DetailView Id="Client_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main" RelativeSize="100">
+          <LayoutGroup Id="SimpleEditors" RelativeSize="4.708798017348204">
+            <LayoutGroup Id="Client" RelativeSize="100">
+              <LayoutItem Id="Name" RelativeSize="100" />
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="Invoices_Group" Direction="Vertical" RelativeSize="95.2912019826518">
+            <LayoutItem Id="Invoices" ShowCaption="False" RelativeSize="100" />
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
+  </Views>
+</Application>
